@@ -1,5 +1,7 @@
 import cv2
 
+from random import randrange
+
 # Load some pre-trianed data on face frontals from opencv (haar cascade algorithm)
 # cv2: call library
 # Cascade
@@ -10,7 +12,7 @@ trained_face_data = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
     # this is how you import img into open cv
     # imread: image read 
     # img is a 2d array of numbers
-img = cv2.imread('rdj.jpg')
+img = cv2.imread('ba_rdj.jpg')
 
 # Convert to Grascale 
     # easy to deal w one number/binary instead of three/rgb
@@ -33,15 +35,19 @@ face_coordinates = trained_face_data.detectMultiScale(grayscaled_img)
         # take y and add height to it
     # (0, 255, 0): color of square, B [G] R
     # 2 :  thickness of rectangle
-# cv2.rectangle(img, (x,y), (x+w, y+h), (0, 255, 0), 2)
-cv2.rectangle(img, (260,  95), (260+217, 95+217), (0, 255, 0), 2)
+# cv2.rectangle(img, (260,  95), (260+217, 95+217), (0, 0, 255), 5) <=hard coding coordinates
+# (below) automatically assigns var in face_coordinates to tuple, 0 bc list within list 
+    #  multiple faces results in face_coordinates turning into list of lists
+for (x, y, w, h) in face_coordinates:
+    cv2.rectangle(img, (x,y), (x+w, y+h), (randrange(128, 256), randrange(128, 256), randrange(128, 256)), 5)
 
 
 
 
-# imshow: image show
-# 'Clever Programmer Face Detector': name of window that pops up
-# img [refer to var above] the image you want to display
+# Display Image With Faces
+    # imshow: image show
+    # 'Clever Programmer Face Detector': name of window that pops up
+    # img [refer to var above] the image you want to display
 cv2.imshow('Clever Programmer Face Detector', img)
 
 # waitkey: needed or otherwise image closes instantly by pausing execution of your code
