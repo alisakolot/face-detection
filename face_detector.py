@@ -12,20 +12,47 @@ trained_face_data = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
     # this is how you import img into open cv
     # imread: image read 
     # img is a 2d array of numbers
-img = cv2.imread('ba_rdj.jpg')
+# img = cv2.imread('ba_rdj.jpg')
 
-# Convert to Grascale 
+# Webcam Source:
+# can add filename instead of 0
+webcam = cv2.VideoCapture(0)
+# key = cv2.waitKey(1)
+
+# Iterate forever over frames:
+while True:
+
+    # Read the current frame
+    # returns tuples: 1. if reading the frame was successful, 2. fram/actual img
+    successful_frame_read, frame = webcam.read()
+
+    grayscaled_img = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) 
+
+    # Detect Faces:
+    face_coordinates = trained_face_data.detectMultiScale(grayscaled_img)
+    print(face_coordinates)
+
+    for (x, y, w, h) in face_coordinates:
+        # pulling frame from line 27 when webcam unpacks
+        cv2.rectangle(frame, (x,y), (x+w, y+h), (randrange(128, 256), randrange(128, 256), randrange(128, 256)), 5)
+
+    cv2.imshow('Clever Programmer Face Detector', frame)
+    cv2.waitKey(1) #number is a place holder for delay in milliseconds before keystroke is measured
+
+    
+
+# Convert to Grayscale 
     # easy to deal w one number/binary instead of three/rgb
     # cvtColor: convert color, params: source img, 
     # **BGR = RBG, cv2 quirk 
-grayscaled_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)    
+# grayscaled_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)    
 
 # Detect Faces
     # trained_face_Data: face classifier
     # detectMultiScale: detects objects of different sizes in input image, 
         # can detect face regardless of size
     #  gives us coordinates of rectangle surrounding the face
-face_coordinates = trained_face_data.detectMultiScale(grayscaled_img)
+# face_coordinates = trained_face_data.detectMultiScale(grayscaled_img)
 # print(face_coordinates)
 # results in [top left coordinate, width, height, bottom right point]
 
@@ -38,8 +65,8 @@ face_coordinates = trained_face_data.detectMultiScale(grayscaled_img)
 # cv2.rectangle(img, (260,  95), (260+217, 95+217), (0, 0, 255), 5) <=hard coding coordinates
 # (below) automatically assigns var in face_coordinates to tuple, 0 bc list within list 
     #  multiple faces results in face_coordinates turning into list of lists
-for (x, y, w, h) in face_coordinates:
-    cv2.rectangle(img, (x,y), (x+w, y+h), (randrange(128, 256), randrange(128, 256), randrange(128, 256)), 5)
+# for (x, y, w, h) in face_coordinates:
+#     cv2.rectangle(img, (x,y), (x+w, y+h), (randrange(128, 256), randrange(128, 256), randrange(128, 256)), 5)
 
 
 
@@ -48,11 +75,11 @@ for (x, y, w, h) in face_coordinates:
     # imshow: image show
     # 'Clever Programmer Face Detector': name of window that pops up
     # img [refer to var above] the image you want to display
-cv2.imshow('Clever Programmer Face Detector', img)
+# cv2.imshow('Clever Programmer Face Detector', img)
 
 # waitkey: needed or otherwise image closes instantly by pausing execution of your code
     # waiting until a key is pressed, closes on keystroke
-cv2.waitKey() 
+# cv2.waitKey() 
 
 
 
