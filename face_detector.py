@@ -37,9 +37,15 @@ while True:
         cv2.rectangle(frame, (x,y), (x+w, y+h), (randrange(128, 256), randrange(128, 256), randrange(128, 256)), 5)
 
     cv2.imshow('Clever Programmer Face Detector', frame)
-    cv2.waitKey(1) #number is a place holder for delay in milliseconds before keystroke is measured
-
+    key = cv2.waitKey(1) #number is
     
+    # Stop if Q is pressed
+        # numbers represent ascii code
+    if key == 81 or key == 113:
+        break
+
+
+ 
 
 # Convert to Grayscale 
     # easy to deal w one number/binary instead of three/rgb
