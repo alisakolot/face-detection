@@ -1,0 +1,14 @@
+Audio module:
+Error: unable to install AppKit due to 'failed building wheel for cairo'
+
+Goal: install NSSound to use in playsound  module 
+Reqs:
+1. PyObjC
+2. AppKit
+3. NSSound
+
+Resources/Troubleshooting:
+https://stackoverflow.com/questions/47270354/python-3-no-module-named-appkit
+https://pypi.org/project/AppKit/#files
+https://github.com/heyitsjames/NatGeo-Downloader/issues/1
+https://superuser.com/questions/657191/package-cairo-was-not-found-in-the-pkg-config-search-path
