@@ -16,13 +16,13 @@ trained_face_data = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
     # img is a 2d array of numbers
 # img = cv2.imread('ba_rdj.jpg')
 
-# Webcam Source:
+"""Webcam Source:"""
 # can add filename instead of 0
 webcam = cv2.VideoCapture(0)
 # key = cv2.waitKey(1)
 
 # play file 
-# playsound_check.Play()
+playsound_check.Play()
 
 # Iterate forever over frames:
 while True:
@@ -33,22 +33,26 @@ while True:
 
     grayscaled_img = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) 
 
-    # Detect Faces:
+    """Detect Faces"""
     face_coordinates = trained_face_data.detectMultiScale(grayscaled_img)
     print(face_coordinates)
     
-    # face_coord_lst = []
-    # face_coord_lst.append(face_coordinates[0])
-    # init_coord = face_coord_lst[0]
-    
+    """Get list of coordinates, to get data on initial position"""
+    default_coord_lst = []
+    face_coord_lst = []
+    # face_coord_lst: box for one frame
+    face_coord_lst.append(face_coordinates)
 
+    # default_coord_lst: box for all frames
+    default_coord_lst.append(face_coord_lst)
+
+    
+    """Framing/Frame Color"""
     for (x, y, w, h) in face_coordinates:
         # pulling frame from line 27 when webcam unpacks
         cv2.rectangle(frame, (x,y), (x+w, y+h), (randrange(128, 256), randrange(128, 256), randrange(128, 256)), 5)
         
-        # 1. get first coordinates/first data
-        # 2. if the movement in small pixel range (say 0-150) stop music
-        # 3. else play music
+        
         
         
     cv2.imshow('Clever Programmer Face Detector', frame)
@@ -58,7 +62,7 @@ while True:
         # numbers represent ascii code
     if key == 81 or key == 113:
         break
-    print(face_coord_lst)
+    # print(face_coord_lst)
     
 
 
@@ -106,6 +110,7 @@ while True:
 
 
 
-
+print('*****', face_coord_lst)
+print('####', default_coord_lst)
 print("Code complete")
 
