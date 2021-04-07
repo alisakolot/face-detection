@@ -1,6 +1,5 @@
 import cv2
 from random import randrange
-
 import playsound_check
 
 
@@ -24,6 +23,7 @@ webcam = cv2.VideoCapture(0)
 # play file 
 playsound_check.Play()
 
+previous_coord_lst = []
 # Iterate forever over frames:
 while True:
     
@@ -36,23 +36,46 @@ while True:
     """Detect Faces"""
     face_coordinates = trained_face_data.detectMultiScale(grayscaled_img)
     print(face_coordinates)
+    if len(face_coordinates) == 0:
+        continue
+
+    # if any([[529, 8, 400, 400], [670, 328, 228, 228]]):
+    #     playsound_check.ExitPlayer()
+    # else:
+    #     playsound_check.Play()
     
     """Get list of coordinates, to get data on initial position"""
-    default_coord_lst = []
+    # resetting default coording and face coord lst
+    
     face_coord_lst = []
     # face_coord_lst: box for one frame
     face_coord_lst.append(face_coordinates)
 
-    # default_coord_lst: box for all frames
-    default_coord_lst.append(face_coord_lst)
+    # keep largest rectangle in face_coordinates
+    # function that takes arg x and multiplies it by third/fourth element together
+    face_coordinates = [max(face_coordinates, key = lambda x: x[2] * x[3])]
 
-    
     """Framing/Frame Color"""
     for (x, y, w, h) in face_coordinates:
         # pulling frame from line 27 when webcam unpacks
         cv2.rectangle(frame, (x,y), (x+w, y+h), (randrange(128, 256), randrange(128, 256), randrange(128, 256)), 5)
+        # check if diagonal in current rect is the same as diagonal in previous rect
         
-        
+
+        # compute how big the movement is
+
+
+        # og face_coord_lst is previous face coord
+        # current face_coord has to be recorded after several seconds 
+    
+    # resetting the previous coords
+    # estimated moving window
+    # need to keep an avg
+    previous_coord_lst = face_coordinates
+
+
+    # find the center of the frame
+    
         
         
     cv2.imshow('Clever Programmer Face Detector', frame)
@@ -110,7 +133,6 @@ while True:
 
 
 
-print('*****', face_coord_lst)
-print('####', default_coord_lst)
+print('*****', face_coordinates)
 print("Code complete")
 
