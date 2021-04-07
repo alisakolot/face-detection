@@ -40,7 +40,7 @@ while True:
     gray = cv2.GaussianBlur(gray, (21, 21), 0)
 
     # In the first iteration of the while loop the static_back var is 
-        # assigned to our first frfame 
+        # assigned to our first frame 
     if static_back is None:
         static_back = gray
         continue
@@ -48,8 +48,8 @@ while True:
     # Difference between static background and current frame (which is GaussianBlur)
     diff_frame = cv2.absdiff(static_back, gray)
 
-    # If the change between statuc background/static_back and 
-        # current grame is grater than 30 it will show up white
+    # If the change between static background/static_back and 
+        # current grame is greater than 30 it will show up white
     thresh_frame = cv2.threshold(diff_frame, 30, 355, cv2.THRESH_BINARY)[1]
     thresh_frame = cv2.dilate(thresh_frame, None, iterations = 2)
     
@@ -63,6 +63,11 @@ while True:
         motion = 1
 
         (x, y, w, h) = cv2.boundingRect(contour)
+
+        # keep largest rectangle in face_coordinates
+        # function that takes arg x and multiplies it by third/fourth element together
+        # face_coordinates = [max(face_coordinates, key = lambda x: x[2] * x[3])]
+        
         # making green rectangle arround the moving obj
         cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
 
@@ -94,18 +99,18 @@ while True:
     key = cv2.waitKey(1)
 
 
-    # stopping the process w q
+    # stopping the process with q
     if key == ord('q'):
         # if something is moving, the end time of the movement is appended
         if motion == 1:
             time.append(datetime.now())
         break
 
-    # appending tiem of motion in DataFrame
+    # appending time of motion in DataFrame
     for i in range(0, len(time), 2):
         df = df.append({"Start": time[i], "End": time[i + 1]}, ignore_index = True)
 
-        # Create a CSV file in which tiem of movement will be saved 
+        # Create a CSV file in which time of movement will be saved 
         df.to_csv("Time_of_movement.csv")
 
         video.release()
